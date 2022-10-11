@@ -78,7 +78,6 @@ const createUser = async (req, res) => {
 
         res.status(201).json(newUser);
     }catch(err){
-        console.log(err);
         res.status(500).json({ error: 'Something went wrong' });
     }
 }
@@ -108,6 +107,22 @@ const updateUser = async (req, res) => {
     }catch(err){
         res.status(500).json({ error: 'Something went wrong' });
     }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.id);
+
+        if(!user){
+            return res.json("Not found");
+        }
+        await user.destroy()
+
+        res.status(200).json({ message: 'User deleted!' });
+    }catch (err) {
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+
 }
 
 const login = async (req, res) => {
@@ -146,21 +161,6 @@ const login = async (req, res) => {
     }
 }
 
-const deleteUser = async (req, res) => {
-    try {
-        const user = await User.findByPk(req.params.id);
-
-        if(!user){
-            return res.json("Not found");
-        }
-        await user.destroy()
-
-        res.status(200).json({ message: 'User deleted!' });
-    }catch (err) {
-        res.status(500).json({ error: 'Something went wrong' });
-    }
-
-}
 
 const userRoutes = (app) => {
     app.get('/users', allUsers)
