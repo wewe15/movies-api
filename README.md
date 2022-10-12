@@ -1,4 +1,4 @@
-# e-commerce API
+# Movies API
 
 ## Getting Started
 
