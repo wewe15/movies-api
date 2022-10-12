@@ -1,4 +1,5 @@
 const multer = require('multer');
+const { Op } = require("sequelize");
 const { Movie } = require('../models');
 
 const storage = multer.diskStorage({
@@ -27,16 +28,46 @@ const upload = multer({
     },
 });
 
-const allMovies = async (_req, res) => {
+const allMovies = async (req, res) => {
     try {
-        const movies = await Movie.findAll();
+        const where = {};
+        const category_id = req.query.category_id;
+        const rate = req.query.rate;
+        const title = req.query.title;
 
-        if(movies.length === 0) {
-            return res.json({message: 'Movie not found'});
+        if(category_id || rate || title) {
+            where[Op.and] = [];
+            if(category_id) {
+                where[Op.and].push({category_id})
+            }
+
+            if(rate) {
+                where[Op.and].push({
+                    rate: {
+                        [Op.gte]: rate
+                    }
+                });
+            }
+
+            if(title) {
+                where[Op.and].push({
+                    title: {
+                        [Op.substring]: title
+                    }
+                });
+            }
         }
 
-        res.status(200).json(movies);
+        const movies = await Movie.findAll({ where });
+
+        if(movies.length === 0) {
+            return res.json({massage: 'Movies not found'});
+        }
+
+        res.status(200).json(movies)
+
     } catch (error) {
+        console.log(error);
         res.status(500).json({error: 'Somthing went wrong'});
     }
 }
