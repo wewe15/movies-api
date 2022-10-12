@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      rating: {
+      rate: {
         type: Sequelize.FLOAT,
         allowNull: false,
       },

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    rating: {
+    rate: {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0.0,

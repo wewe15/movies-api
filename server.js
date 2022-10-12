@@ -3,6 +3,7 @@ const cors =  require('cors');
 const { sequelize } = require('./models');
 const userRoutes = require('./handelrs/users');
 const categoriesRoutes = require('./handelrs/categories');
+const moviesRoutes = require('./handelrs/movies');
 
 const app = express();
 const port = process.env.PORT|| '3001';
@@ -17,6 +18,7 @@ app.get('/', function (_req, res) {
 
 userRoutes(app);
 categoriesRoutes(app);
+moviesRoutes(app);
 
 app.use((_req, res) => {
     res.status(404).json({message: 'oh you are lost.'})
