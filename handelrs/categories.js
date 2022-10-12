@@ -1,4 +1,5 @@
 const { Category } = require('../models');
+const { authAdmin } = require('../middlewares/authentication');
 
 
 const allCategories = async (_req, res) => {
@@ -83,11 +84,11 @@ const deleteCategory = async (req, res) => {
 }
 
 const categoriesRoutes = (app) => {
-    app.get('/categories', allCategories)
-    app.post('/categories',  createCategory)
-    app.get('/categories/:id', getCategoryById)
-    app.patch('/categories/:id',  updateCategory)
-    app.delete('/categories/:id', deleteCategory)
+    app.get('/categories',authAdmin, allCategories)
+    app.post('/categories',authAdmin, createCategory)
+    app.get('/categories/:id',authAdmin, getCategoryById)
+    app.patch('/categories/:id',authAdmin, updateCategory)
+    app.delete('/categories/:id',authAdmin, deleteCategory)
 }
 
 module.exports = categoriesRoutes;

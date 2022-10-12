@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { Op } = require("sequelize");
 const { User } = require('../models');
+const { authAdmin } = require('../middlewares/authentication');
 
 
 dotenv.config();
@@ -163,12 +164,12 @@ const login = async (req, res) => {
 
 
 const userRoutes = (app) => {
-    app.get('/users', allUsers)
-    app.post('/users',  createUser)
-    app.get('/users/:id', getUserById)
+    app.get('/users',authAdmin, allUsers)
+    app.post('/users',authAdmin,  createUser)
+    app.get('/users/:id',authAdmin, getUserById)
     app.post('/users/login', login)
-    app.patch('/users/:id',  updateUser)
-    app.delete('/users/:id', deleteUser)
+    app.patch('/users/:id',authAdmin,  updateUser)
+    app.delete('/users/:id',authAdmin, deleteUser)
 }
 
 module.exports = userRoutes;

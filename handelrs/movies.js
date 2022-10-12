@@ -1,6 +1,7 @@
 const multer = require('multer');
 const { Op } = require("sequelize");
 const { Movie } = require('../models');
+const { authAdmin } = require('../middlewares/authentication');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -162,11 +163,11 @@ const deleteMovie = async (req, res) => {
 }
 
 const moviesRoutes = (app) => {
-    app.get('/movies', allMovies)
-    app.post('/movies', upload.single('image'), createMovie)
-    app.get('/movies/:id', getMovieById)
-    app.patch('/movies/:id', upload.single('image'), updateMovie)
-    app.delete('/movies/:id', deleteMovie)
+    app.get('/movies',authAdmin, allMovies)
+    app.post('/movies',authAdmin, upload.single('image'), createMovie)
+    app.get('/movies/:id',authAdmin, getMovieById)
+    app.patch('/movies/:id',authAdmin, upload.single('image'), updateMovie)
+    app.delete('/movies/:id',authAdmin, deleteMovie)
 }
 
 module.exports = moviesRoutes;
